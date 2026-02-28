@@ -1,0 +1,64 @@
+{
+  "projectType": "general",
+  "projectName": "CV Template",
+  "projectDescription": "A minimal two-column CV template in LaTeX with Overleaf support and multi-language examples",
+  "theme": "willow",
+  "primaryColor": "#0066CC",
+  "lightColor": "#999999",
+  "darkColor": "#333333",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "quickstart",
+          "installation"
+        ]
+      },
+      {
+        "group": "Usage Guide",
+        "pages": [
+          "guide/sections",
+          "guide/customization",
+          "guide/commands",
+          "guide/styling"
+        ]
+      },
+      {
+        "group": "Advanced",
+        "pages": [
+          "advanced/local-compilation",
+          "advanced/docker",
+          "advanced/troubleshooting"
+        ]
+      },
+      {
+        "group": "Examples",
+        "pages": [
+          "examples/english-cv",
+          "examples/indonesian-cv"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Two-column layout optimized for readability",
+    "Pre-built commands for all CV sections (experience, education, projects, awards)",
+    "Multi-language support with English and Indonesian examples",
+    "Overleaf-compatible with one-click upload",
+    "Customizable colors and styling",
+    "GitHub Actions for automated PDF compilation"
+  ],
+  "publicApiSurface": [
+    "\\cvname{name}",
+    "\\cvtitle{title}",
+    "\\contactline{text}",
+    "\\experienceitem{Company}{Role}{Location}{Dates}",
+    "\\educationitem{School}{Degree}{Year}",
+    "\\projectitem{Name}{Type}{Link}{Year}",
+    "\\orgitem{Organization}{Role}{Location}{Dates}",
+    "\\awarditem{Title}{Issuer}{Year}",
+    "\\softitem{Category}{Skills}"
+  ]
+}
