@@ -1,0 +1,287 @@
+---
+title: CV Sections and Layout
+description: Understanding the two-column layout structure and CV sections
+---
+
+## Two-Column Layout
+
+The template uses the `paracol` package to create a flexible two-column layout. The column ratio is set to **65% left** and **35% right**, providing more space for detailed content on the left.
+
+```latex
+\columnratio{0.65}
+\setlength{\columnsep}{1.5em}
+```
+
+## Header Section
+
+The header spans two columns and contains your name, title, professional summary, and contact information.
+
+### Structure
+
+```latex
+\begin{paracol}{2}
+    % Left column: Name, title, summary
+    \cvname{Alya Pranata}
+    \cvtitle{Software Engineer \cvsep Full-Stack and AI Enthusiast}
+    
+    \vspace{0.8em}
+    {\raggedright\noindent Your professional summary goes here...\par}
+    
+    \switchcolumn
+    
+    % Right column: Contact information
+    \begin{flushright}
+        \contactline{Bandung, Indonesia}
+        \contactline{+62 812 3456 7890}
+        \contactline{\href{mailto:alya.pranata@example.com}{alya.pranata@example.com}}
+        \contactline{\href{https://alyapranata.dev}{alyapranata.dev}}
+        \contactline{\href{https://github.com/alyapranata}{github.com/alyapranata}}
+    \end{flushright}
+\end{paracol}
+```
+
+The `\switchcolumn` command moves content from the left column to the right column. Contact information is wrapped in `flushright` to align it to the right edge.
+
+### Horizontal Divider
+
+After the header, a horizontal line separates the header from the body:
+
+```latex
+\vspace{0.3em}
+\noindent\textcolor{headercolor}{\rule{\textwidth}{0.4pt}}
+\vspace{0.8em}
+```
+
+## Experience Section
+
+Displays your work experience with company name, role, location, dates, and bullet points describing your responsibilities.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Experience}
+    
+    \experienceitem
+    {Nusantara Digital Labs}
+    {Frontend Engineer Intern}
+    {Jakarta / Remote}
+    {02/2025 - 07/2025}
+    
+    \begin{cvitems}
+        \item Built internal dashboards using React and TypeScript, reducing manual reporting time by 30\%.
+        \item Collaborated with designers and backend engineers to deliver reusable UI components and API integrations.
+    \end{cvitems}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Pengalaman}
+    
+    \experienceitem
+    {Nusantara Digital Labs}
+    {Frontend Engineer Intern}
+    {Jakarta / Remote}
+    {02/2025 - 07/2025}
+    
+    \begin{cvitems}
+        \item Membangun dashboard internal dengan React dan TypeScript sehingga waktu pelaporan manual berkurang 30\%.
+        \item Berkolaborasi dengan desainer dan backend engineer untuk merilis komponen UI reusable serta integrasi API.
+    \end{cvitems}
+    ```
+  </Tab>
+</Tabs>
+
+## Education Section
+
+Lists your educational background with institution name, degree/program, and year.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Education}
+    
+    \educationitem
+    {Institut Teknologi Bandung}
+    {B.S. in Computer Engineering}
+    {2021 - Present}
+    
+    \educationitem
+    {Dicoding Indonesia}
+    {Cloud and Back-End Developer Learning Path}
+    {2024}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Pendidikan}
+    
+    \educationitem
+    {Institut Teknologi Bandung}
+    {S1 Teknik Komputer}
+    {2021 - Sekarang}
+    
+    \educationitem
+    {Dicoding Indonesia}
+    {Learning Path Cloud dan Back-End Developer}
+    {2024}
+    ```
+  </Tab>
+</Tabs>
+
+## Projects Section
+
+Showcases your personal or academic projects with name, type, link, year, and descriptive bullet points.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Projects}
+    
+    \projectitem
+    {TaskFlow}
+    {Productivity Web App}
+    {\href{https://taskflow-demo.vercel.app}{taskflow-demo.vercel.app}}
+    {2025}
+    
+    \begin{cvitems}
+        \item Implemented Kanban task management with real-time updates and role-based access.
+        \item Integrated authentication and activity logs for team collaboration workflows.
+    \end{cvitems}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Proyek}
+    
+    \projectitem
+    {TaskFlow}
+    {Aplikasi Web Produktivitas}
+    {\href{https://taskflow-demo.vercel.app}{taskflow-demo.vercel.app}}
+    {2025}
+    
+    \begin{cvitems}
+        \item Mengimplementasikan manajemen tugas gaya Kanban dengan pembaruan real-time dan akses berbasis peran.
+        \item Mengintegrasikan autentikasi dan activity log untuk workflow kolaborasi tim.
+    \end{cvitems}
+    ```
+  </Tab>
+</Tabs>
+
+## Software Section
+
+Lists your technical skills grouped by category.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Software}
+    
+    \softitem{Web}{React, Next.js, Node.js, TypeScript, Tailwind CSS}
+    \softitem{Data/AI}{PostgreSQL, MongoDB, Pinecone, OpenAI API}
+    \softitem{Tools}{Git, Linux, Docker, Vercel, Figma}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Perangkat Lunak}
+    
+    \softitem{Web}{React, Next.js, Node.js, TypeScript, Tailwind CSS}
+    \softitem{Data/AI}{PostgreSQL, MongoDB, Pinecone, OpenAI API}
+    \softitem{Tools}{Git, Linux, Docker, Vercel, Figma}
+    ```
+  </Tab>
+</Tabs>
+
+## Organization Section
+
+Describes your involvement in student organizations, clubs, or volunteer work.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Organization}
+    
+    \orgitem
+    {Google Developer Student Clubs ITB}
+    {Core Team Member}
+    {Bandung, Indonesia}
+    {08/2022 - 07/2023}
+    
+    \begin{cvitems}
+        \item Facilitated Flutter and Firebase study sessions for 150+ students and prepared weekly learning materials.
+        \item Coordinated the annual campus hackathon with 30 teams, including sponsorship outreach and mentor matching.
+    \end{cvitems}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Organisasi}
+    
+    \orgitem
+    {Google Developer Student Clubs ITB}
+    {Core Team Member}
+    {Bandung, Indonesia}
+    {08/2022 - 07/2023}
+    
+    \begin{cvitems}
+        \item Memfasilitasi sesi belajar Flutter dan Firebase untuk 150+ mahasiswa serta menyiapkan materi mingguan.
+        \item Mengoordinasikan hackathon kampus tahunan dengan 30 tim, termasuk outreach sponsor dan penugasan mentor.
+    \end{cvitems}
+    ```
+  </Tab>
+</Tabs>
+
+## Awards Section
+
+Highlights academic or professional awards and recognition.
+
+<Tabs>
+  <Tab title="English">
+    ```latex
+    \section{Awards}
+    
+    \awarditem
+    {Dean's List}
+    {School of Electrical Engineering and Informatics, ITB}
+    {2024}
+    
+    \awarditem
+    {1st Place, Innovation Hackathon}
+    {Institut Teknologi Bandung}
+    {2023}
+    ```
+  </Tab>
+  <Tab title="Indonesian">
+    ```latex
+    \section{Penghargaan}
+    
+    \awarditem
+    {Dean's List}
+    {Sekolah Teknik Elektro dan Informatika, ITB}
+    {2024}
+    
+    \awarditem
+    {Juara 1, Innovation Hackathon}
+    {Institut Teknologi Bandung}
+    {2023}
+    ```
+  </Tab>
+</Tabs>
+
+## Section Pairing
+
+Sections are paired in two-column layouts. You can customize which sections appear side-by-side:
+
+**Default Layout:**
+- Header (spans both columns)
+- Experience (left) | Education (right)
+- Projects (left) | Software (right)
+- Organization (left) | Awards (right)
+
+Each paracol block is separated by vertical spacing:
+
+```latex
+\end{paracol}
+\vspace{0.8em}
+\begin{paracol}{2}
+```

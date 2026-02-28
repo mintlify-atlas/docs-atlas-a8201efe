@@ -1,0 +1,114 @@
+---
+title: CV Template
+description: Minimal two-column LaTeX CV template for creating professional resumes with clean typography and flexible layout
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.svg"
+  alt="CV Template Hero"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.svg"
+  alt="CV Template Hero"
+/>
+
+## Overview
+
+A minimal two-column CV template in LaTeX designed for creating professional resumes with clean typography and a flexible layout. The template features a 65/35 column split that puts your experience front and center while keeping contact information and secondary details easily accessible.
+
+Available in both English and Indonesian, with automatic font fallback from Inter to Helvetica for maximum compatibility across different LaTeX environments.
+
+<CardGroup cols={2}>
+  <Card title="Quick start" icon="rocket" href="/quickstart">
+    Get started in 5 minutes using Overleaf - no local setup required
+  </Card>
+  <Card title="Local installation" icon="download" href="/installation">
+    Install TeX Live and compile PDFs on your machine
+  </Card>
+  <Card title="Customization" icon="palette" href="/customization">
+    Customize colors, fonts, and layout to match your style
+  </Card>
+  <Card title="Examples" icon="file-lines" href="/examples">
+    View example CVs in English and Indonesian
+  </Card>
+</CardGroup>
+
+## Key features
+
+<CardGroup cols={3}>
+  <Card title="Two-column layout" icon="columns">
+    65% left column for experience and projects, 35% right column for contact info, education, and skills
+  </Card>
+  <Card title="Bilingual support" icon="language">
+    Includes templates in both English and Indonesian with proper babel support
+  </Card>
+  <Card title="Overleaf ready" icon="cloud">
+    Upload the zip file to Overleaf and start editing immediately - no configuration needed
+  </Card>
+  <Card title="Clean typography" icon="font">
+    Uses Inter font with automatic fallback to Helvetica for universal compatibility
+  </Card>
+  <Card title="Easy to customize" icon="sliders">
+    Simple color scheme with three customizable colors and clear section structure
+  </Card>
+  <Card title="Structured commands" icon="code">
+    Pre-defined commands for experience, education, projects, awards, and skills
+  </Card>
+</CardGroup>
+
+## Template structure
+
+The template organizes your CV into paired two-column blocks:
+
+| Left column (65%) | Right column (35%) |
+|-------------------|--------------------|
+| **Header** — name, title, summary | Contact info |
+| **Experience** | **Education** |
+| **Projects** | **Software / Skills** |
+| **Organization** | **Awards** |
+
+Each section is clearly marked with comment banners in the `.tex` files, making it easy to find and edit your information.
+
+## What's included
+
+<Steps>
+  <Step title="Example templates">
+    Two complete example CVs (`cv_en.tex` and `cv_id.tex`) with realistic content that you can use as a starting point
+  </Step>
+  <Step title="Class file">
+    Reference class file (`cv_template.cls`) based on Awesome-CV for advanced customization
+  </Step>
+  <Step title="Overleaf package">
+    Ready-to-upload ZIP file for instant deployment on Overleaf
+  </Step>
+  <Step title="Build automation">
+    Makefile for quick compilation of both English and Indonesian versions
+  </Step>
+  <Step title="CI/CD workflow">
+    GitHub Actions workflow that automatically compiles PDFs on every commit
+  </Step>
+</Steps>
+
+## Getting started
+
+The fastest way to get started is with Overleaf:
+
+<CardGroup cols={1}>
+  <Card title="Start with Overleaf" icon="bolt" href="/quickstart">
+    Download the Overleaf ZIP, upload to Overleaf, and start editing in your browser - takes less than 5 minutes
+  </Card>
+</CardGroup>
+
+For local development with full control over the compilation process:
+
+<CardGroup cols={1}>
+  <Card title="Local installation" icon="terminal" href="/installation">
+    Install TeX Live and compile PDFs with pdfLaTeX or Docker on your machine
+  </Card>
+</CardGroup>
+
+<Note>
+  The template uses the `paracol` package to create the two-column layout, which gives you flexible control over column widths and section positioning.
+</Note>

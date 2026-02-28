@@ -1,0 +1,304 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for compiling the CV template
+---
+
+## Compilation Errors
+
+### File not found: cv_en.tex
+
+**Symptom**: `! I can't find file 'cv_en.tex'.`
+
+**Cause**: Running pdflatex from the wrong directory.
+
+**Solution**: Navigate to the `examples/` directory before compiling:
+
+```bash
+cd examples
+pdflatex cv_en.tex
+```
+
+Or use the Makefile from the project root:
+
+```bash
+make
+```
+
+### Missing LaTeX packages
+
+**Symptom**: Errors like `! LaTeX Error: File 'fontspec.sty' not found.`
+
+**Cause**: Incomplete TeX Live installation.
+
+**Solutions**:
+
+<Steps>
+  <Step title="Install texlive-full">
+    On Ubuntu/Debian:
+    ```bash
+    sudo apt-get install texlive-full
+    ```
+  </Step>
+
+  <Step title="Or install from upstream">
+    Follow the [official TeX Live installation guide](https://tex.stackexchange.com/q/1092) for the most up-to-date packages.
+  </Step>
+
+  <Step title="Verify installation">
+    ```bash
+    pdflatex --version
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+Installing only `texlive-base` or `texlive-latex-base` is insufficient. The template requires packages from the full distribution.
+</Warning>
+
+### Undefined control sequence
+
+**Symptom**: `! Undefined control sequence.` followed by a command like `\cvname`
+
+**Cause**: The template file doesn't define the custom commands, or there's a typo.
+
+**Solution**: Verify you're using the correct template files from the `examples/` directory. The template embeds all necessary definitions inline.
+
+## Font Issues
+
+### Inter font not found
+
+**Symptom**: Warning in compilation log: `Font Inter not found, falling back to Helvetica`
+
+**Cause**: The Inter font is not installed on your system.
+
+**Impact**: The PDF will use Helvetica instead of Inter. This is intentional fallback behavior.
+
+**Solution (optional)**: To use Inter:
+
+<Steps>
+  <Step title="Download Inter">
+    Visit [rsms.me/inter](https://rsms.me/inter/) and download the font family.
+  </Step>
+
+  <Step title="Install the font">
+    - **Windows**: Right-click `.ttf` files and select "Install"
+    - **Mac**: Double-click `.ttf` files and click "Install Font"
+    - **Linux**: Copy `.ttf` files to `~/.fonts/` and run `fc-cache -f -v`
+  </Step>
+
+  <Step title="Recompile">
+    ```bash
+    pdflatex cv_en.tex
+    ```
+  </Step>
+</Steps>
+
+<Note>
+The fallback to Helvetica ensures the template works everywhere. Installing Inter improves visual appearance but is not required.
+</Note>
+
+### Font encoding warnings
+
+**Symptom**: Warnings about font encoding or missing glyphs.
+
+**Cause**: Using special characters not available in the selected font.
+
+**Solution**: Ensure your text uses standard UTF-8 characters supported by Helvetica or Inter.
+
+## Overleaf Issues
+
+### Wrong compiler selected
+
+**Symptom**: Compilation fails on Overleaf with errors about undefined commands.
+
+**Cause**: Overleaf is using XeLaTeX or LuaLaTeX instead of pdfLaTeX.
+
+**Solution**:
+
+<Steps>
+  <Step title="Open the Overleaf menu">
+    Click the **Menu** button in the top-left corner.
+  </Step>
+
+  <Step title="Change compiler">
+    Under **Settings**, find **Compiler** and select **pdfLaTeX**.
+  </Step>
+
+  <Step title="Recompile">
+    Click **Recompile** to rebuild the PDF.
+  </Step>
+</Steps>
+
+<Warning>
+The template is specifically designed for pdfLaTeX. Using other compilers will produce errors or unexpected output.
+</Warning>
+
+### Upload failures
+
+**Symptom**: Can't upload the template to Overleaf.
+
+**Cause**: Uploading individual files instead of the ZIP archive.
+
+**Solution**:
+
+1. Download `CV_Template_Overleaf.zip` from the repository
+2. On Overleaf, select **New Project** > **Upload Project**
+3. Upload the entire ZIP file (do not extract it first)
+
+## Docker Issues
+
+### Permission denied on generated files
+
+**Symptom**: Can't edit or delete PDF files created by Docker.
+
+**Cause**: Container ran as root user.
+
+**Solution**: Always use the `--user` flag:
+
+```bash
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD/examples":/doc texlive/texlive:latest pdflatex cv_en.tex
+```
+
+**To fix existing files**:
+
+```bash
+sudo chown -R $USER:$USER examples/
+```
+
+### Volume mount not working
+
+**Symptom**: Container can't find `.tex` files.
+
+**Cause**: Incorrect volume mount path.
+
+**Solution**: Verify the mount path:
+
+```bash
+# Check that you're in the project root
+pwd
+
+# Verify examples/ exists
+ls examples/
+
+# Use absolute path if relative path fails
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$(pwd)/examples":/doc texlive/texlive:latest pdflatex cv_en.tex
+```
+
+### Docker image pull fails
+
+**Symptom**: `Unable to find image 'texlive/texlive:latest' locally` followed by download errors.
+
+**Cause**: Network issues or Docker Hub connectivity problems.
+
+**Solution**:
+
+```bash
+# Retry the pull
+docker pull texlive/texlive:latest
+
+# Or use a specific version
+docker pull texlive/texlive:TL2024-historic
+```
+
+## Build Artifacts Issues
+
+### Stale auxiliary files
+
+**Symptom**: Compilation succeeds but PDF has outdated content or broken references.
+
+**Cause**: Corrupted `.aux` or `.out` files from previous builds.
+
+**Solution**: Clean and rebuild:
+
+```bash
+make clean
+make
+```
+
+Or manually:
+
+```bash
+cd examples
+rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.synctex.gz
+pdflatex cv_en.tex
+pdflatex cv_en.tex
+```
+
+<Note>
+Running pdflatex twice ensures cross-references and page numbers are correctly resolved.
+</Note>
+
+### PDF not updating
+
+**Symptom**: Changes to `.tex` file don't appear in PDF.
+
+**Cause**: PDF viewer is locking the file (common on Windows).
+
+**Solution**:
+
+1. Close the PDF in your viewer
+2. Recompile
+3. Reopen the PDF
+
+Or use a viewer that supports live reload (e.g., Sumatra PDF on Windows, Skim on Mac).
+
+## GitHub Actions Issues
+
+### Workflow fails with compilation errors
+
+**Symptom**: GitHub Actions workflow fails when compiling PDFs.
+
+**Cause**: Usually a LaTeX syntax error in the `.tex` file.
+
+**Solution**:
+
+<Steps>
+  <Step title="Check the workflow logs">
+    Click on the failed workflow run and examine the compilation output.
+  </Step>
+
+  <Step title="Reproduce locally">
+    Compile the same file locally to get a clearer error message:
+    ```bash
+    cd examples
+    pdflatex cv_en.tex
+    ```
+  </Step>
+
+  <Step title="Fix the error">
+    Address the LaTeX syntax error in your `.tex` file.
+  </Step>
+
+  <Step title="Commit and push">
+    The workflow will automatically run again.
+  </Step>
+</Steps>
+
+### Workflow doesn't trigger
+
+**Symptom**: Pushing changes doesn't start the PDF compilation workflow.
+
+**Cause**: Changes pushed to a branch other than `main` or `master`.
+
+**Solution**: The workflow is configured to run on:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+```
+
+Either push to `main`/`master`, create a pull request, or trigger manually via **Actions** > **Compile PDFs** > **Run workflow**.
+
+## Getting Help
+
+If you encounter an issue not covered here:
+
+1. Check the compilation log for specific error messages
+2. Search for the error on [TeX Stack Exchange](https://tex.stackexchange.com/)
+3. Verify your TeX Live installation is complete and up-to-date
+4. Try compiling with Docker to rule out local environment issues

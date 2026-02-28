@@ -1,0 +1,366 @@
+---
+title: Styling and Customization
+description: Guide to customizing colors, fonts, and PDF metadata
+---
+
+## Color Customization
+
+The template uses three main colors that control the overall appearance. These are defined in the preamble using `\definecolor`.
+
+### Color Definitions
+
+From `cv_en.tex` (lines 28-32):
+
+```latex
+% --- Colors ------------------------------------------------------------------
+% Change these to adjust the overall color scheme.
+\definecolor{textcolor}{HTML}{333333}   % body text
+\definecolor{headercolor}{HTML}{999999} % section headers, metadata
+\definecolor{linkcolor}{HTML}{0066CC}   % hyperlinks
+
+\color{textcolor}
+```
+
+### Color Usage
+
+<Tabs>
+  <Tab title="textcolor">
+    **Used for:** Main body text, your name, and primary content
+    
+    **Default:** `#333333` (dark gray)
+    
+    **Example changes:**
+    ```latex
+    \definecolor{textcolor}{HTML}{000000}   % pure black
+    \definecolor{textcolor}{HTML}{1a1a1a}   % very dark gray
+    ```
+  </Tab>
+  
+  <Tab title="headercolor">
+    **Used for:** Section headings, dates, locations, metadata, bullet points in `cvitems`
+    
+    **Default:** `#999999` (medium gray)
+    
+    **Example changes:**
+    ```latex
+    \definecolor{headercolor}{HTML}{666666}   % darker gray
+    \definecolor{headercolor}{HTML}{2c3e50}   % blue-gray
+    \definecolor{headercolor}{HTML}{7f8c8d}   % steel gray
+    ```
+  </Tab>
+  
+  <Tab title="linkcolor">
+    **Used for:** Clickable hyperlinks (email, website, project URLs)
+    
+    **Default:** `#0066CC` (blue)
+    
+    **Example changes:**
+    ```latex
+    \definecolor{linkcolor}{HTML}{2980b9}   % darker blue
+    \definecolor{linkcolor}{HTML}{16a085}   % teal
+    \definecolor{linkcolor}{HTML}{8e44ad}   % purple
+    ```
+  </Tab>
+</Tabs>
+
+### Color Scheme Examples
+
+<CodeGroup>
+
+```latex Classic Professional
+\definecolor{textcolor}{HTML}{333333}
+\definecolor{headercolor}{HTML}{999999}
+\definecolor{linkcolor}{HTML}{0066CC}
+```
+
+```latex Modern Dark
+\definecolor{textcolor}{HTML}{1a1a1a}
+\definecolor{headercolor}{HTML}{555555}
+\definecolor{linkcolor}{HTML}{3498db}
+```
+
+```latex Warm Tone
+\definecolor{textcolor}{HTML}{2c2c2c}
+\definecolor{headercolor}{HTML}{8b7355}
+\definecolor{linkcolor}{HTML}{c0392b}
+```
+
+```latex Tech Blue
+\definecolor{textcolor}{HTML}{2c3e50}
+\definecolor{headercolor}{HTML}{7f8c8d}
+\definecolor{linkcolor}{HTML}{3498db}
+```
+
+</CodeGroup>
+
+## Font Customization
+
+The template defaults to the Inter font if available, otherwise falls back to Helvetica.
+
+### Default Font Configuration
+
+From `cv_en.tex` (lines 20-26):
+
+```latex
+\IfFileExists{inter.sty}{
+  \usepackage[sfdefault]{inter}
+}{
+  \usepackage[scaled=0.95]{helvet}
+}
+
+\renewcommand{\familydefault}{\sfdefault}
+```
+
+### Changing Fonts
+
+<Tabs>
+  <Tab title="Use Helvetica">
+    Remove the conditional and use Helvetica directly:
+    
+    ```latex
+    \usepackage[scaled=0.95]{helvet}
+    \renewcommand{\familydefault}{\sfdefault}
+    ```
+  </Tab>
+  
+  <Tab title="Use Inter">
+    Install Inter font package and use it:
+    
+    ```latex
+    \usepackage[sfdefault]{inter}
+    \renewcommand{\familydefault}{\sfdefault}
+    ```
+  </Tab>
+  
+  <Tab title="Use Arial">
+    ```latex
+    \usepackage{helvet}
+    \renewcommand{\familydefault}{\sfdefault}
+    ```
+  </Tab>
+  
+  <Tab title="Use Calibri">
+    ```latex
+    \usepackage{fontspec}
+    \setmainfont{Calibri}
+    ```
+    
+    Note: Requires XeLaTeX or LuaLaTeX instead of pdfLaTeX
+  </Tab>
+  
+  <Tab title="Use Latin Modern">
+    ```latex
+    \usepackage{lmodern}
+    % Remove \renewcommand{\familydefault}{\sfdefault}
+    ```
+  </Tab>
+</Tabs>
+
+### Font Size Adjustments
+
+The base document font size is set in the document class:
+
+```latex
+\documentclass[a4paper,10pt]{article}
+```
+
+You can change `10pt` to:
+- `9pt` - smaller, fits more content
+- `10pt` - default, balanced
+- `11pt` - larger, more readable
+- `12pt` - largest standard size
+
+## PDF Metadata
+
+Configure PDF metadata for better document properties when viewed in PDF readers.
+
+### Metadata Configuration
+
+From `cv_en.tex` (lines 36-44):
+
+```latex
+% --- PDF metadata ------------------------------------------------------------
+% Update these with your own name and title.
+\hypersetup{
+	colorlinks=true,
+	linkcolor=linkcolor,
+	urlcolor=linkcolor,
+	pdfauthor={Your Name},          % <-- your name
+	pdftitle={Your Name - CV}       % <-- PDF title
+}
+```
+
+### Metadata Fields
+
+<ParamField path="pdfauthor" type="string">
+  Your name (appears in PDF document properties)
+  
+  ```latex
+  pdfauthor={Alya Pranata}
+  ```
+</ParamField>
+
+<ParamField path="pdftitle" type="string">
+  PDF document title (appears in browser tabs and PDF readers)
+  
+  ```latex
+  pdftitle={Alya Pranata - Software Engineer CV}
+  ```
+</ParamField>
+
+<ParamField path="pdfsubject" type="string">
+  Optional subject field
+  
+  ```latex
+  pdfsubject={Curriculum Vitae}
+  ```
+</ParamField>
+
+<ParamField path="pdfkeywords" type="string">
+  Optional keywords for searchability
+  
+  ```latex
+  pdfkeywords={Software Engineer, Full-Stack, React, Node.js}
+  ```
+</ParamField>
+
+### Complete Metadata Example
+
+```latex
+\hypersetup{
+	colorlinks=true,
+	linkcolor=linkcolor,
+	urlcolor=linkcolor,
+	pdfauthor={Alya Pranata},
+	pdftitle={Alya Pranata - Software Engineer CV},
+	pdfsubject={Curriculum Vitae},
+	pdfkeywords={Software Engineer, Full-Stack, React, TypeScript, Node.js}
+}
+```
+
+## Page Layout Customization
+
+### Margins
+
+Adjust page margins (default: 1.8cm):
+
+```latex
+\usepackage[margin=1.8cm]{geometry}
+```
+
+**To change:**
+```latex
+\usepackage[margin=2cm]{geometry}          % uniform margins
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  % individual margins
+```
+
+### Column Ratio
+
+Adjust the two-column layout ratio (default: 65% left, 35% right):
+
+```latex
+\columnratio{0.65}
+```
+
+**Common alternatives:**
+```latex
+\columnratio{0.7}    % 70% left, 30% right (more space for main content)
+\columnratio{0.6}    % 60% left, 40% right (more balanced)
+\columnratio{0.5}    % 50% left, 50% right (equal columns)
+```
+
+### Column Spacing
+
+Adjust space between columns:
+
+```latex
+\setlength{\columnsep}{1.5em}
+```
+
+**To change:**
+```latex
+\setlength{\columnsep}{2em}     % wider gap
+\setlength{\columnsep}{1em}     % narrower gap
+```
+
+## Section Heading Style
+
+The section headings are styled using `titlesec` package (lines 47-50):
+
+```latex
+\titleformat{\section}
+	{\normalfont\footnotesize\bfseries\color{headercolor}\uppercase}
+	{}{0em}{}
+\titlespacing*{\section}{0pt}{1.2em}{0.55em}
+```
+
+### Customizing Section Headings
+
+<Tabs>
+  <Tab title="Larger Headings">
+    ```latex
+    \titleformat{\section}
+    	{\normalfont\large\bfseries\color{headercolor}\uppercase}
+    	{}{0em}{}
+    ```
+  </Tab>
+  
+  <Tab title="No Uppercase">
+    ```latex
+    \titleformat{\section}
+    	{\normalfont\footnotesize\bfseries\color{headercolor}}
+    	{}{0em}{}
+    ```
+  </Tab>
+  
+  <Tab title="Different Color">
+    ```latex
+    \titleformat{\section}
+    	{\normalfont\footnotesize\bfseries\color{black}\uppercase}
+    	{}{0em}{}
+    ```
+  </Tab>
+</Tabs>
+
+### Section Spacing
+
+Adjust spacing before and after section headings:
+
+```latex
+\titlespacing*{\section}{0pt}{1.2em}{0.55em}
+%                         ^     ^       ^
+%                         |     |       after
+%                         |     before
+%                         left indent
+```
+
+## Horizontal Divider
+
+The horizontal line below the header is customizable:
+
+```latex
+\noindent\textcolor{headercolor}{\rule{\textwidth}{0.4pt}}
+```
+
+**Customizations:**
+
+<CodeGroup>
+
+```latex Thicker Line
+\noindent\textcolor{headercolor}{\rule{\textwidth}{1pt}}
+```
+
+```latex Different Color
+\noindent\textcolor{linkcolor}{\rule{\textwidth}{0.4pt}}
+```
+
+```latex Black Line
+\noindent\textcolor{black}{\rule{\textwidth}{0.4pt}}
+```
+
+```latex No Line
+% Comment out or remove the line:
+% \noindent\textcolor{headercolor}{\rule{\textwidth}{0.4pt}}
+```
+
+</CodeGroup>

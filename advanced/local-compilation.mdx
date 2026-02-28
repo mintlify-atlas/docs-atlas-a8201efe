@@ -1,0 +1,160 @@
+---
+title: Local Compilation
+description: Compile the CV template locally using pdflatex and TeX Live
+---
+
+## Overview
+
+Compiling the CV template locally gives you full control over the build process and doesn't require an internet connection. The template uses standard LaTeX packages and compiles with pdflatex.
+
+## Requirements
+
+### TeX Live Installation
+
+A full TeX distribution is required. TeX Live is the recommended distribution and is available for Windows, Mac, and Linux.
+
+**Installation options:**
+
+- **From upstream (recommended)**: [Install TeX from upstream](https://tex.stackexchange.com/q/1092) for the most up-to-date packages
+- **Via package manager (Ubuntu/Debian)**: `sudo apt-get install texlive-full`
+
+<Warning>
+The `texlive-full` package via apt can be outdated. Installing from upstream is recommended for the latest features and bug fixes.
+</Warning>
+
+### Required Packages
+
+The template uses standard LaTeX packages that are included in a full TeX Live installation:
+
+- **fontspec**: Font selection for XeLaTeX/LuaLaTeX
+- **geometry**: Page layout configuration
+- **xcolor**: Color support
+- **hyperref**: Hyperlinks and PDF metadata
+- **tabularx**: Advanced table formatting
+
+## Basic Compilation
+
+<Steps>
+  <Step title="Navigate to the examples directory">
+    ```bash
+    cd examples
+    ```
+  </Step>
+
+  <Step title="Compile with pdflatex">
+    For the English version:
+    ```bash
+    pdflatex cv_en.tex
+    ```
+
+    For the Indonesian version:
+    ```bash
+    pdflatex cv_id.tex
+    ```
+  </Step>
+
+  <Step title="Verify the output">
+    The compiled PDF will be created in the same directory:
+    - `examples/cv_en.pdf` (English)
+    - `examples/cv_id.pdf` (Indonesian)
+  </Step>
+</Steps>
+
+## Using the Makefile
+
+The project includes a Makefile for automated compilation. From the project root directory:
+
+```bash
+make
+```
+
+This compiles both English and Indonesian versions in a single command.
+
+### What the Makefile Does
+
+The Makefile runs pdflatex **twice** for each document:
+
+```makefile
+CC = pdflatex
+DIR = examples
+
+all: $(DIR)/cv_en.pdf $(DIR)/cv_id.pdf
+
+$(DIR)/cv_en.pdf: $(DIR)/cv_en.tex
+	cd $(DIR) && $(CC) cv_en.tex && $(CC) cv_en.tex
+
+$(DIR)/cv_id.pdf: $(DIR)/cv_id.tex
+	cd $(DIR) && $(CC) cv_id.tex && $(CC) cv_id.tex
+```
+
+<Note>
+Running pdflatex twice ensures that cross-references, table of contents, and page numbers are correctly resolved.
+</Note>
+
+### Cleaning Build Artifacts
+
+To remove temporary compilation files:
+
+```bash
+make clean
+```
+
+This removes:
+- `*.aux` - Auxiliary files
+- `*.log` - Compilation logs
+- `*.out` - Hyperref outline files
+- `*.toc` - Table of contents files
+- `*.fls` - File list files
+- `*.fdb_latexmk` - Latexmk database files
+- `*.synctex.gz` - SyncTeX files
+
+## Compilation Workflow
+
+<Steps>
+  <Step title="Edit your CV">
+    Open `examples/cv_en.tex` or `examples/cv_id.tex` in your text editor.
+  </Step>
+
+  <Step title="Compile the document">
+    Run `make` from the project root, or:
+    ```bash
+    cd examples
+    pdflatex cv_en.tex
+    ```
+  </Step>
+
+  <Step title="Review the PDF">
+    Open the generated PDF file to verify your changes.
+  </Step>
+
+  <Step title="Iterate as needed">
+    Repeat the edit-compile-review cycle until satisfied.
+  </Step>
+</Steps>
+
+## Font Handling
+
+The template uses the **Inter** font when available and automatically falls back to **Helvetica** if Inter is not installed.
+
+To use the Inter font:
+
+1. Download from [rsms.me/inter](https://rsms.me/inter/)
+2. Install the font on your system
+3. Recompile the document
+
+<Note>
+The fallback to Helvetica ensures compatibility across all environments, even without Inter installed.
+</Note>
+
+## Compiler Selection
+
+This template is designed for **pdfLaTeX**. Do not use XeLaTeX or LuaLaTeX as they may produce different results.
+
+```bash
+# Correct
+pdflatex cv_en.tex
+
+# Not recommended
+xelatex cv_en.tex
+lualatex cv_en.tex
+```

@@ -1,0 +1,157 @@
+---
+title: Docker Compilation
+description: Use Docker to compile the CV template without installing TeX Live locally
+---
+
+## Overview
+
+Docker provides a containerized TeX Live environment, allowing you to compile the CV template without installing LaTeX packages on your system. This approach ensures consistency across different machines and operating systems.
+
+## Prerequisites
+
+- [Docker](https://docker.com) installed on your system
+- Basic familiarity with Docker commands
+
+## Docker Image
+
+The template uses the official **texlive/texlive:latest** Docker image, which includes a full TeX Live distribution.
+
+## Basic Usage
+
+From the project root directory, run:
+
+```bash
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD/examples":/doc texlive/texlive:latest pdflatex cv_en.tex
+```
+
+### Command Breakdown
+
+| Flag | Purpose |
+|------|----------|
+| `--rm` | Remove container after execution |
+| `--user $(id -u):$(id -g)` | Run as current user (preserves file ownership) |
+| `-i` | Keep STDIN open (interactive mode) |
+| `-w "/doc"` | Set working directory inside container |
+| `-v "$PWD/examples":/doc` | Mount local `examples/` to container `/doc` |
+| `texlive/texlive:latest` | Official TeX Live Docker image |
+| `pdflatex cv_en.tex` | Command to execute inside container |
+
+## Compiling Both Versions
+
+<Steps>
+  <Step title="Compile English version">
+    ```bash
+    docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD/examples":/doc texlive/texlive:latest pdflatex cv_en.tex
+    ```
+  </Step>
+
+  <Step title="Compile Indonesian version">
+    ```bash
+    docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD/examples":/doc texlive/texlive:latest pdflatex cv_id.tex
+    ```
+  </Step>
+
+  <Step title="Verify output">
+    Check that `examples/cv_en.pdf` and `examples/cv_id.pdf` were created.
+  </Step>
+</Steps>
+
+## Volume Mounting
+
+The `-v` flag mounts your local `examples/` directory to `/doc` inside the container:
+
+```bash
+-v "$PWD/examples":/doc
+```
+
+- **Source**: `$PWD/examples` (your local directory)
+- **Target**: `/doc` (container directory)
+- **Result**: Files compiled in `/doc` appear in your local `examples/` directory
+
+<Warning>
+If you mount the wrong directory, the container won't find your `.tex` files. Always verify the mount path.
+</Warning>
+
+## User Permissions
+
+The `--user $(id -u):$(id -g)` flag runs the container as your current user:
+
+```bash
+--user $(id -u):$(id -g)
+```
+
+Without this flag, Docker runs as root by default, and generated files will be owned by root, requiring sudo to modify or delete them.
+
+<Note>
+On Windows, you may need to adjust the user flag or omit it entirely, depending on your Docker installation.
+</Note>
+
+## Creating a Shell Alias
+
+For convenience, create an alias in your `~/.bashrc` or `~/.zshrc`:
+
+```bash
+alias pdflatex-docker='docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD":/doc texlive/texlive:latest pdflatex'
+```
+
+Then compile with:
+
+```bash
+cd examples
+pdflatex-docker cv_en.tex
+```
+
+## Docker vs Local Compilation
+
+| Aspect | Local Compilation | Docker |
+|--------|-------------------|--------|
+| **Setup** | Install TeX Live (~5-7 GB) | Install Docker (~100 MB) |
+| **Speed** | Fast (native) | Slower (container overhead) |
+| **Consistency** | Depends on installed packages | Identical across machines |
+| **Disk space** | TeX Live on host | Image (~3 GB) + cache |
+| **Internet** | One-time install | Pull image once, then offline |
+| **Updates** | Manual package updates | Pull new image version |
+
+## CI/CD Integration
+
+The GitHub Actions workflow uses a similar approach with the `xu-cheng/latex-action@v3` action, which internally uses a TeX Live Docker image:
+
+```yaml
+- name: Compile English CV
+  uses: xu-cheng/latex-action@v3
+  with:
+    working_directory: examples
+    root_file: cv_en.tex
+```
+
+This ensures that PDFs compiled locally with Docker match those compiled in CI.
+
+## Troubleshooting
+
+### Container exits immediately
+
+Verify that the volume mount path is correct:
+
+```bash
+# Check current directory
+pwd
+
+# Verify examples/ exists
+ls examples/
+```
+
+### Permission denied errors
+
+Ensure you're using the `--user` flag:
+
+```bash
+--user $(id -u):$(id -g)
+```
+
+### Image not found
+
+Pull the image manually:
+
+```bash
+docker pull texlive/texlive:latest
+```

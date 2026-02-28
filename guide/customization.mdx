@@ -1,0 +1,242 @@
+---
+title: Customizing Your CV Content
+description: Step-by-step guide to editing your CV information
+---
+
+## Editing Your Name and Title
+
+<Steps>
+  <Step title="Update your name">
+    Find the `\cvname` command in the header section and replace with your full name:
+    
+    ```latex
+    \cvname{Alya Pranata}
+    ```
+  </Step>
+  
+  <Step title="Update your title">
+    Modify the `\cvtitle` command with your professional title or tagline:
+    
+    ```latex
+    \cvtitle{Software Engineer \cvsep Full-Stack and AI Enthusiast}
+    ```
+    
+    The `\cvsep` command adds a centered dot separator between title segments.
+  </Step>
+  
+  <Step title="Edit professional summary">
+    Replace the paragraph text with your own professional summary:
+    
+    ```latex
+    {\raggedright\noindent Software engineer with hands-on experience in building web products from ideation to deployment. Strong in JavaScript and TypeScript ecosystems with practical knowledge of backend services and database design. Interested in shipping useful tools, improving product reliability, and integrating AI features into real workflows.\par}
+    ```
+  </Step>
+</Steps>
+
+## Editing Contact Information
+
+The contact section is right-aligned in the header. Update each `\contactline` with your information:
+
+```latex
+\begin{flushright}
+    \contactline{Bandung, Indonesia}
+    \contactline{+62 812 3456 7890}
+    \contactline{\href{mailto:alya.pranata@example.com}{alya.pranata@example.com}}
+    \contactline{\href{https://alyapranata.dev}{alyapranata.dev}}
+    \contactline{\href{https://github.com/alyapranata}{github.com/alyapranata}}
+\end{flushright}
+```
+
+<Note>
+For email and website links, use `\href{url}{display text}` to make them clickable in the PDF.
+</Note>
+
+## Adding Experience Entries
+
+<Accordion title="How to add a new work experience">
+  Copy an existing `\experienceitem` block and modify it:
+  
+  ```latex
+  \experienceitem
+  {Nusantara Digital Labs}
+  {Frontend Engineer Intern}
+  {Jakarta / Remote}
+  {02/2025 - 07/2025}
+  
+  \begin{cvitems}
+      \item Built internal dashboards using React and TypeScript, reducing manual reporting time by 30\%.
+      \item Collaborated with designers and backend engineers to deliver reusable UI components and API integrations.
+  \end{cvitems}
+  ```
+  
+  **To add another entry:** Paste the block below the existing one and update all four parameters (company, role, location, dates) plus the bullet points.
+</Accordion>
+
+<Accordion title="Adding bullet points to an experience">
+  Each bullet point is added with `\item` inside the `cvitems` environment:
+  
+  ```latex
+  \begin{cvitems}
+      \item Your first achievement or responsibility
+      \item Your second achievement or responsibility
+      \item Your third achievement or responsibility
+  \end{cvitems}
+  ```
+</Accordion>
+
+## Adding Education Entries
+
+Education entries are simpler with three parameters:
+
+```latex
+\educationitem
+{Institut Teknologi Bandung}
+{B.S. in Computer Engineering}
+{2021 - Present}
+```
+
+**To add more education entries:** Copy the entire `\educationitem` block and paste it below, then update the institution, degree, and year.
+
+<Tabs>
+  <Tab title="University">
+    ```latex
+    \educationitem
+    {Institut Teknologi Bandung}
+    {B.S. in Computer Engineering}
+    {2021 - Present}
+    ```
+  </Tab>
+  <Tab title="Online Course">
+    ```latex
+    \educationitem
+    {Dicoding Indonesia}
+    {Cloud and Back-End Developer Learning Path}
+    {2024}
+    ```
+  </Tab>
+</Tabs>
+
+## Adding Projects
+
+Projects use `\projectitem` with four parameters plus bullet points:
+
+```latex
+\projectitem
+{TaskFlow}
+{Productivity Web App}
+{\href{https://taskflow-demo.vercel.app}{taskflow-demo.vercel.app}}
+{2025}
+
+\begin{cvitems}
+    \item Implemented Kanban task management with real-time updates and role-based access.
+    \item Integrated authentication and activity logs for team collaboration workflows.
+\end{cvitems}
+```
+
+<Steps>
+  <Step title="Project name">
+    The first parameter is the project name (e.g., `TaskFlow`)
+  </Step>
+  
+  <Step title="Project type">
+    The second parameter describes the project type (e.g., `Productivity Web App`)
+  </Step>
+  
+  <Step title="Link">
+    The third parameter is the project link. Use `\href{url}{display text}` format:
+    ```latex
+    {\href{https://taskflow-demo.vercel.app}{taskflow-demo.vercel.app}}
+    ```
+  </Step>
+  
+  <Step title="Year">
+    The fourth parameter is the completion year (e.g., `2025`)
+  </Step>
+  
+  <Step title="Description bullets">
+    Add bullet points inside `\begin{cvitems}...\end{cvitems}` to describe key features or achievements.
+  </Step>
+</Steps>
+
+## Adding Software Skills
+
+The Software section uses `\softitem` with two parameters: category and comma-separated skills.
+
+```latex
+\section{Software}
+
+\softitem{Web}{React, Next.js, Node.js, TypeScript, Tailwind CSS}
+\softitem{Data/AI}{PostgreSQL, MongoDB, Pinecone, OpenAI API}
+\softitem{Tools}{Git, Linux, Docker, Vercel, Figma}
+```
+
+**To add a new skill category:** Add a new `\softitem` line:
+
+```latex
+\softitem{Mobile}{React Native, Flutter, Swift}
+```
+
+## Adding Organization Entries
+
+Organization entries follow the same structure as experience entries:
+
+```latex
+\orgitem
+{Google Developer Student Clubs ITB}
+{Core Team Member}
+{Bandung, Indonesia}
+{08/2022 - 07/2023}
+
+\begin{cvitems}
+    \item Facilitated Flutter and Firebase study sessions for 150+ students and prepared weekly learning materials.
+    \item Coordinated the annual campus hackathon with 30 teams, including sponsorship outreach and mentor matching.
+\end{cvitems}
+```
+
+## Adding Awards
+
+Awards use `\awarditem` with three parameters:
+
+```latex
+\awarditem
+{Dean's List}
+{School of Electrical Engineering and Informatics, ITB}
+{2024}
+```
+
+<Tabs>
+  <Tab title="Academic Award">
+    ```latex
+    \awarditem
+    {Dean's List}
+    {School of Electrical Engineering and Informatics, ITB}
+    {2024}
+    ```
+  </Tab>
+  <Tab title="Competition Award">
+    ```latex
+    \awarditem
+    {1st Place, Innovation Hackathon}
+    {Institut Teknologi Bandung}
+    {2023}
+    ```
+  </Tab>
+  <Tab title="Certificate">
+    ```latex
+    \awarditem
+    {Google Cloud Study Jam}
+    {Distinguished Participant, Google Developer Student Clubs}
+    {2023}
+    ```
+  </Tab>
+</Tabs>
+
+**To add more awards:** Copy an `\awarditem` line and update the award name, issuing organization, and year.
+
+## Removing Sections
+
+To remove an entire section, delete from `\section{SectionName}` down to the next `\section` or `\switchcolumn`/`\end{paracol}` command.
+
+<Warning>
+When removing sections, ensure the two-column layout remains balanced. If you remove a section from one column, consider removing or moving content in the opposite column to maintain visual balance.
+</Warning>

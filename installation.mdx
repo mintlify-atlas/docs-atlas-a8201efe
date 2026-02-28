@@ -1,0 +1,280 @@
+---
+title: Installation
+description: Install TeX Live and compile CVs locally with pdfLaTeX or Docker
+---
+
+## Local installation
+
+For full control over your CV compilation and offline editing, you can install a TeX distribution on your local machine.
+
+## Requirements
+
+A full TeX distribution is required to compile the CV templates. The recommended option is **TeX Live**, which works on Windows, macOS, and Linux.
+
+<Note>
+  If you don't want to install TeX on your system, you can use Docker instead (see below).
+</Note>
+
+## Installing TeX Live
+
+<Tabs>
+  <Tab title="Linux">
+    ### Option 1: Install from upstream (recommended)
+    
+    Installing TeX Live from upstream gives you the most up-to-date packages:
+    
+    1. Download the install script from [tug.org/texlive](https://www.tug.org/texlive/acquire-netinstall.html)
+    2. Run the installer and select the full scheme
+    
+    See the [TeX Live installation guide](https://tex.stackexchange.com/q/1092) for detailed instructions.
+    
+    ### Option 2: Install from package manager
+    
+    For Ubuntu/Debian:
+    
+    ```bash
+    sudo apt-get install texlive-full
+    ```
+    
+    For Fedora:
+    
+    ```bash
+    sudo dnf install texlive-scheme-full
+    ```
+    
+    For Arch Linux:
+    
+    ```bash
+    sudo pacman -S texlive-most
+    ```
+    
+    <Warning>
+      Package manager versions may be outdated. Installing from upstream is recommended for the latest features.
+    </Warning>
+  </Tab>
+  
+  <Tab title="macOS">
+    ### MacTeX (recommended)
+    
+    MacTeX is the standard TeX distribution for macOS:
+    
+    1. Download MacTeX from [tug.org/mactex](https://www.tug.org/mactex/)
+    2. Open the `.pkg` file and follow the installer
+    3. The installation includes TeX Live, LaTeXiT, and other useful tools
+    
+    ### Homebrew
+    
+    Alternatively, install via Homebrew:
+    
+    ```bash
+    brew install --cask mactex
+    ```
+    
+    This will download and install the full MacTeX distribution.
+  </Tab>
+  
+  <Tab title="Windows">
+    ### TeX Live on Windows
+    
+    1. Download the network installer from [tug.org/texlive](https://www.tug.org/texlive/acquire-netinstall.html)
+    2. Run `install-tl-windows.exe`
+    3. Select the full installation scheme
+    4. Wait for the installation to complete (may take 30+ minutes)
+    
+    ### MiKTeX (alternative)
+    
+    MiKTeX is another popular TeX distribution for Windows:
+    
+    1. Download from [miktex.org](https://miktex.org/download)
+    2. Run the installer
+    3. Choose to install missing packages on-the-fly when prompted
+  </Tab>
+</Tabs>
+
+## Cloning the repository
+
+Once TeX Live is installed, clone the CV Template repository:
+
+```bash
+git clone https://github.com/Mirza42069/CV_Template.git
+cd CV_Template
+```
+
+## Compiling your CV
+
+<CodeGroup>
+
+```bash pdfLaTeX
+cd examples
+pdflatex cv_en.tex
+```
+
+```bash Makefile
+make
+```
+
+```bash Docker
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD/examples":/doc texlive/texlive:latest pdflatex cv_en.tex
+```
+
+</CodeGroup>
+
+### Using pdfLaTeX directly
+
+Navigate to the `examples` directory and compile:
+
+```bash
+cd examples
+pdflatex cv_en.tex
+```
+
+This will generate `cv_en.pdf` in the same directory.
+
+<Note>
+  You may see warnings about overfull hboxes - these are usually safe to ignore and won't affect the final PDF.
+</Note>
+
+To compile the Indonesian version:
+
+```bash
+pdflatex cv_id.tex
+```
+
+### Using the Makefile
+
+From the project root, run:
+
+```bash
+make
+```
+
+This will compile both `cv_en.pdf` and `cv_id.pdf` in the `examples` directory. The Makefile runs `pdflatex` twice for each file to ensure all references are resolved correctly.
+
+**Makefile targets:**
+
+- `make all` or `make` - Compile both English and Indonesian CVs
+- `make examples/cv_en.pdf` - Compile only the English CV
+- `make examples/cv_id.pdf` - Compile only the Indonesian CV
+- `make clean` - Remove auxiliary files (`.aux`, `.log`, `.out`, etc.)
+
+### Using Docker
+
+If you don't want to install TeX Live locally, you can use the official TeX Live Docker image:
+
+```bash
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" \
+  -v "$PWD/examples":/doc \
+  texlive/texlive:latest \
+  pdflatex cv_en.tex
+```
+
+**What this command does:**
+
+- `--rm` - Remove the container after compilation
+- `--user $(id -u):$(id -g)` - Run as your user (prevents permission issues)
+- `-w "/doc"` - Set working directory inside container
+- `-v "$PWD/examples":/doc` - Mount the examples directory
+- `texlive/texlive:latest` - Use the official TeX Live image
+- `pdflatex cv_en.tex` - Compile the English CV
+
+<Warning>
+  The first time you run this command, Docker will download the TeX Live image, which is several gigabytes and may take a while.
+</Warning>
+
+## File structure
+
+After cloning the repository, you'll see this structure:
+
+```
+examples/
+  cv_en.tex             English CV template (edit this)
+  cv_id.tex             Indonesian CV template (edit this)
+  cv_en.pdf             Compiled English PDF
+  cv_id.pdf             Compiled Indonesian PDF
+  cv_en.png             Preview screenshot (English)
+  cv_id.png             Preview screenshot (Indonesian)
+cv_template.cls         Reference class file (not used by templates)
+.github/workflows/compile-pdfs.yml   GitHub Actions CI for PDF compilation
+CV_Template_Overleaf.zip    Ready-to-upload ZIP for Overleaf
+Makefile                Build script (make all)
+```
+
+<Note>
+  The example templates (`cv_en.tex` and `cv_id.tex`) don't use `cv_template.cls`. They are self-contained with all styling defined inline. The class file is included as a reference for advanced users who want to create a custom class.
+</Note>
+
+## Continuous integration
+
+The repository includes a GitHub Actions workflow that automatically compiles PDFs on every push:
+
+```yaml .github/workflows/compile-pdfs.yml
+name: Compile PDFs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile LaTeX documents
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            examples/cv_en.tex
+            examples/cv_id.tex
+```
+
+This ensures your PDFs are always up to date with your source files.
+
+## Troubleshooting
+
+### Missing packages
+
+If you get errors about missing packages:
+
+**TeX Live users:**
+```bash
+tlmgr install <package-name>
+```
+
+**MiKTeX users:**  
+MiKTeX will prompt you to install missing packages automatically.
+
+### Font not found
+
+The template tries to use the Inter font if available, but falls back to Helvetica automatically:
+
+```latex
+\IfFileExists{inter.sty}{
+  \usepackage[sfdefault]{inter}
+}{
+  \usepackage[scaled=0.95]{helvet}
+}
+```
+
+No action is needed - the fallback works seamlessly.
+
+### Compilation errors
+
+If you encounter compilation errors:
+
+1. Make sure you're using `pdflatex` (not `latex`, `xelatex`, or `lualatex`)
+2. Check that all required packages are installed
+3. Try running `pdflatex` twice - some references require two passes
+4. Look at the `.log` file in the `examples` directory for detailed error messages
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Customization" icon="palette" href="/customization">
+    Learn how to customize colors, fonts, and layout
+  </Card>
+  <Card title="Examples" icon="file-lines" href="/examples">
+    View sample CVs and see what's possible
+  </Card>
+</CardGroup>

@@ -1,0 +1,347 @@
+---
+title: English CV Example
+description: Complete walkthrough of the English CV template with detailed structure and section examples
+---
+
+This page provides a detailed walkthrough of the English CV example (`cv_en.tex`), showing how the template structures content in a clean two-column layout.
+
+## Overview
+
+The English CV example demonstrates a professional software engineering resume with:
+- Two-column header with name/summary on left, contact info on right
+- Balanced sections across columns
+- Modern, minimal design with customizable colors
+- Complete content examples for all section types
+
+<Card title="View Compiled PDF" icon="file-pdf" href="../examples/cv_en.pdf">
+  See the final result of this template
+</Card>
+
+## Document Structure
+
+The template starts with package imports and configuration:
+
+```latex
+\documentclass[a4paper,10pt]{article}
+
+% --- Packages ----------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{paracol}  % Two-column layout
+\usepackage{titlesec}  % Section styling
+\usepackage{enumitem}  % List formatting
+\usepackage{hyperref}  % Clickable links
+\usepackage{xcolor}  % Color support
+```
+
+### Color Scheme
+
+Three customizable colors define the entire look:
+
+```latex
+\definecolor{textcolor}{HTML}{333333}   % body text
+\definecolor{headercolor}{HTML}{999999} % section headers, metadata
+\definecolor{linkcolor}{HTML}{0066CC}   % hyperlinks
+```
+
+## Header Section
+
+<AccordionGroup>
+  <Accordion title="Name, Title, and Summary">
+    The header uses a two-column layout (65/35 split) with name, title, and professional summary on the left:
+
+    ```latex
+    \begin{paracol}{2}
+      % -- Name & title --
+      \cvname{Alya Pranata}
+      \cvtitle{Software Engineer \cvsep Full-Stack and AI Enthusiast}
+
+      \vspace{0.8em}
+
+      % -- Professional summary --
+      {\raggedright\noindent Software engineer with hands-on experience in 
+      building web products from ideation to deployment. Strong in JavaScript 
+      and TypeScript ecosystems with practical knowledge of backend services 
+      and database design. Interested in shipping useful tools, improving 
+      product reliability, and integrating AI features into real workflows.\par}
+
+      \switchcolumn
+    ```
+
+    The `\cvsep` command creates the dot separator between elements.
+  </Accordion>
+
+  <Accordion title="Contact Information">
+    Contact details are right-aligned in the second column:
+
+    ```latex
+    % -- Contact info (right-aligned) --
+    \begin{flushright}
+      \contactline{Bandung, Indonesia}
+      \contactline{+62 812 3456 7890}
+      \contactline{\href{mailto:alya.pranata@example.com}{alya.pranata@example.com}}
+      \contactline{\href{https://alyapranata.dev}{alyapranata.dev}}
+      \contactline{\href{https://github.com/alyapranata}{github.com/alyapranata}}
+    \end{flushright}
+
+    \end{paracol}
+    ```
+
+    Each `\contactline` creates a new line with consistent spacing. Links are clickable using `\href`.
+  </Accordion>
+</AccordionGroup>
+
+After the header, a horizontal rule separates it from the content:
+
+```latex
+\vspace{0.3em}
+\noindent\textcolor{headercolor}{\rule{\textwidth}{0.4pt}}
+\vspace{0.8em}
+```
+
+## Main Content Sections
+
+<AccordionGroup>
+  <Accordion title="Experience (Left Column)">
+    The Experience section demonstrates the `\experienceitem` command:
+
+    ```latex
+    \section{Experience}
+
+    % -- Experience 1 --
+    \experienceitem
+    {Nusantara Digital Labs}
+    {Frontend Engineer Intern}
+    {Jakarta / Remote}
+    {02/2025 - 07/2025}
+
+    \begin{cvitems}
+      \item Built internal dashboards using React and TypeScript, 
+            reducing manual reporting time by 30\%.
+      \item Collaborated with designers and backend engineers to deliver 
+            reusable UI components and API integrations.
+    \end{cvitems}
+
+    % -- Experience 2 --
+    \experienceitem
+    {PT Data Sistem Integrasi}
+    {Software Engineer Intern}
+    {Bandung, Indonesia}
+    {08/2024 - 12/2024}
+
+    \begin{cvitems}
+      \item Developed RESTful endpoints with Node.js and PostgreSQL 
+            for inventory and order tracking.
+      \item Wrote test cases and improved query performance for 
+            high-traffic pages.
+    \end{cvitems}
+    ```
+
+    **Format**: `\experienceitem{Company}{Role}{Location}{Dates}` followed by bullet points in `cvitems` environment.
+  </Accordion>
+
+  <Accordion title="Education (Right Column)">
+    Education entries are simpler, using `\educationitem`:
+
+    ```latex
+    \switchcolumn
+
+    \section{Education}
+
+    % -- Education 1 --
+    \educationitem
+    {Institut Teknologi Bandung}
+    {B.S. in Computer Engineering}
+    {2021 - Present}
+
+    % -- Education 2 --
+    \educationitem
+    {Dicoding Indonesia}
+    {Cloud and Back-End Developer Learning Path}
+    {2024}
+    ```
+
+    **Format**: `\educationitem{School}{Degree}{Year}` - no bullet points needed.
+  </Accordion>
+
+  <Accordion title="Projects (Left Column)">
+    Projects use `\projectitem` with a link and bullet points:
+
+    ```latex
+    \section{Projects}
+
+    % -- Project 1 --
+    \projectitem
+    {TaskFlow}
+    {Productivity Web App}
+    {\href{https://taskflow-demo.vercel.app}{taskflow-demo.vercel.app}}
+    {2025}
+
+    \begin{cvitems}
+      \item Implemented Kanban task management with real-time updates 
+            and role-based access.
+      \item Integrated authentication and activity logs for team 
+            collaboration workflows.
+    \end{cvitems}
+
+    % -- Project 2 --
+    \projectitem
+    {InsightHub}
+    {AI Knowledge Assistant}
+    {\href{https://insighthub-demo.vercel.app}{insighthub-demo.vercel.app}}
+    {2024}
+
+    \begin{cvitems}
+      \item Built semantic search and document Q\&A using vector 
+            embeddings and LLM API calls.
+      \item Added citation-based responses and dashboard analytics 
+            for user queries.
+    \end{cvitems}
+    ```
+
+    **Format**: `\projectitem{Name}{Type/Subtitle}{Link}{Year}` followed by bullet points.
+  </Accordion>
+
+  <Accordion title="Software/Skills (Right Column)">
+    The Software section uses `\softitem` to list skills by category:
+
+    ```latex
+    \switchcolumn
+
+    \section{Software}
+
+    \softitem{Web}{React, Next.js, Node.js, TypeScript, Tailwind CSS}
+    \softitem{Data/AI}{PostgreSQL, MongoDB, Pinecone, OpenAI API}
+    \softitem{Tools}{Git, Linux, Docker, Vercel, Figma}
+    ```
+
+    **Format**: `\softitem{Category}{Comma-separated skills}` - clean and scannable.
+  </Accordion>
+
+  <Accordion title="Organization (Left Column)">
+    Organization experience uses `\orgitem`, similar to experience:
+
+    ```latex
+    \section{Organization}
+
+    % -- Organization 1 --
+    \orgitem
+    {Google Developer Student Clubs ITB}
+    {Core Team Member}
+    {Bandung, Indonesia}
+    {08/2022 - 07/2023}
+
+    \begin{cvitems}
+      \item Facilitated Flutter and Firebase study sessions for 150+ 
+            students and prepared weekly learning materials.
+      \item Coordinated the annual campus hackathon with 30 teams, 
+            including sponsorship outreach and mentor matching.
+    \end{cvitems}
+
+    % -- Organization 2 --
+    \orgitem
+    {ITB Robotics Society}
+    {Programming Division}
+    {Bandung, Indonesia}
+    {03/2022 - Present}
+
+    \begin{cvitems}
+      \item Developed control and telemetry modules in Python for 
+            line-follower and autonomous robot prototypes.
+      \item Managed Git workflow and code reviews for a 10-member 
+            programming team during competition cycles.
+    \end{cvitems}
+    ```
+
+    **Format**: `\orgitem{Organization}{Role}{Location}{Dates}` followed by bullet points.
+  </Accordion>
+
+  <Accordion title="Awards (Right Column)">
+    Awards are the simplest entries:
+
+    ```latex
+    \switchcolumn
+
+    \section{Awards}
+
+    % -- Award 1 --
+    \awarditem
+    {Dean's List}
+    {School of Electrical Engineering and Informatics, ITB}
+    {2024}
+
+    % -- Award 2 --
+    \awarditem
+    {1st Place, Innovation Hackathon}
+    {Institut Teknologi Bandung}
+    {2023}
+
+    % -- Award 3 --
+    \awarditem
+    {Google Cloud Study Jam}
+    {Distinguished Participant, Google Developer Student Clubs}
+    {2023}
+    ```
+
+    **Format**: `\awarditem{Title}{Issuer}{Year}` - no bullet points needed.
+  </Accordion>
+</AccordionGroup>
+
+## Two-Column Layout Pattern
+
+The template uses a consistent pattern throughout:
+
+```latex
+\begin{paracol}{2}
+  \section{Left Section}
+  % Content for left column
+  
+  \switchcolumn
+  
+  \section{Right Section}
+  % Content for right column
+\end{paracol}
+
+\vspace{0.8em}  % Spacing before next row
+```
+
+The column ratio is set to 65/35 at the top:
+
+```latex
+\columnratio{0.65}
+\setlength{\columnsep}{1.5em}
+```
+
+## Available Commands Quick Reference
+
+The template provides these pre-built commands:
+
+| Command | Parameters | Usage |
+|---------|-----------|-------|
+| `\experienceitem` | Company, Role, Location, Dates | Work experience entries |
+| `\educationitem` | School, Degree, Year | Education entries |
+| `\projectitem` | Name, Type, Link, Year | Project entries |
+| `\orgitem` | Organization, Role, Location, Dates | Organization/volunteer work |
+| `\awarditem` | Title, Issuer, Year | Awards and recognition |
+| `\softitem` | Category, Skills | Skills grouped by category |
+| `\contactline` | Text or link | Contact information lines |
+
+## Customization Tips
+
+1. **Change colors**: Edit the three color definitions at the top
+2. **Adjust spacing**: Modify `\vspace` values throughout
+3. **Column ratio**: Change `\columnratio{0.65}` for different widths
+4. **Font**: The template uses Inter (if available) or Helvetica as fallback
+5. **Add sections**: Copy the `\begin{paracol}` pattern for new rows
+
+## Compiling the CV
+
+Compile with:
+
+```bash
+pdflatex cv_en.tex
+```
+
+The output will be `cv_en.pdf` in the same directory.
